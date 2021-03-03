@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://inthowe.github.io</id>
     <title>你看见我小熊么</title>
-    <updated>2021-03-03T12:57:06.663Z</updated>
+    <updated>2021-03-03T12:59:49.225Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://inthowe.github.io"/>
     <link rel="self" href="https://inthowe.github.io/atom.xml"/>
@@ -92,7 +92,7 @@
 }
 </code></pre>
 </blockquote>
-<p>BraveKnight在它的构造函数中自行创建了RescueDamselQuest，这使得BraveKnight紧密地和 RescueDamselQuest耦合到了一起，因为如果让骑士执行其他任务如屠龙任务，那么BraveKnight将无法执行，除非将BraveKnight修改如下</p>
+<p>BraveKnight在它的构造函数中自行创建了RescueDamselQuest（new RescueDamselQuest()），这使得BraveKnight紧密地和 RescueDamselQuest耦合到了一起，因为如果让骑士执行其他任务如屠龙任务，那么BraveKnight将无法执行，除非将BraveKnight修改如下</p>
 <blockquote>
 <pre><code>public class BraveKnight  implements knight{
     //private RescueDamselQuest quest;
