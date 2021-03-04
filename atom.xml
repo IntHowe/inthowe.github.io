@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://inthowe.github.io</id>
     <title>你看见我小熊么</title>
-    <updated>2021-03-03T13:55:58.988Z</updated>
+    <updated>2021-03-04T05:49:28.589Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://inthowe.github.io"/>
     <link rel="self" href="https://inthowe.github.io/atom.xml"/>
@@ -16,9 +16,9 @@
         <link href="https://inthowe.github.io/post/spring-DI/">
         </link>
         <updated>2021-03-03T10:40:17.000Z</updated>
-        <summary type="html"><![CDATA[<p>依赖注入能够解耦代码并易于理解及测试。</p>
+        <summary type="html"><![CDATA[<p>通过依赖注入DI，对象的依赖关系将由系统中负责协调各对象的第三方组件在创建对象的时候进行设定，对象无需自行创建或管理它们的依赖关系。实现代码解耦及易于理解和测试。</p>
 ]]></summary>
-        <content type="html"><![CDATA[<p>依赖注入能够解耦代码并易于理解及测试。</p>
+        <content type="html"><![CDATA[<p>通过依赖注入DI，对象的依赖关系将由系统中负责协调各对象的第三方组件在创建对象的时候进行设定，对象无需自行创建或管理它们的依赖关系。实现代码解耦及易于理解和测试。</p>
 <!-- more -->
 <h2 id="举个列子">举个列子</h2>
 <p>骑士执行拯救公主，打败恶龙，圆桌滚动等任务，下面创建对应的类</p>
