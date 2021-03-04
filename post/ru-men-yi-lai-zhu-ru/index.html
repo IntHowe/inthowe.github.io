@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>初识依赖注入 | 你看见我小熊么</title>
+<title>入门依赖注入 | 你看见我小熊么</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,12 +24,9 @@
 
 
 
-    <meta name="description" content="通过依赖注入DI，对象的依赖关系将由系统中负责协调各对象的第三方组件在创建对象的时候进行设定，对象无需自行创建或管理它们的依赖关系。实现代码解耦及易于理解和测试。
+    <meta name="description" content="在 Spring 中，对象无需自己查找或创建与其所关联的其他对象，容器会负责把需要相互协作的对象引用赋予各个对象。创建应用对象之间协作关系的行为称为装配wiring，这也是依赖注入DI的本质。
 
-举个列子
-骑士执行拯救公主，打败恶龙，圆桌滚动等任务，下面创建对应的类
-
-..." />
+Spring 容器负责创建应用程序中的 be..." />
     <meta name="keywords" content="依赖注入,Spring" />
   </head>
   <body>
@@ -101,42 +98,53 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">初识依赖注入</h2>
-            <div class="post-date">2021-03-03</div>
+            <h2 class="post-title">入门依赖注入</h2>
+            <div class="post-date">2021-03-04</div>
             
             <div class="post-content" v-pre>
-              <p>通过依赖注入DI，对象的依赖关系将由系统中负责协调各对象的第三方组件在创建对象的时候进行设定，对象无需自行创建或管理它们的依赖关系。实现代码解耦及易于理解和测试。</p>
+              <p>在 Spring 中，对象无需自己查找或创建与其所关联的其他对象，容器会负责把需要相互协作的对象引用赋予各个对象。创建应用对象之间协作关系的行为称为装配wiring，这也是依赖注入DI的本质。</p>
 <!-- more -->
-<h2 id="举个列子">举个列子</h2>
-<p>骑士执行拯救公主，打败恶龙，圆桌滚动等任务，下面创建对应的类</p>
+<p>Spring 容器负责创建应用程序中的 bean（简单看为一个具体对象） 并通过 DI 来协调这些对象之间的关系。我们只需告诉 Spring 要创建哪些 bean 并且如何将其装配在一起，有如下三种方式：</p>
 <ul>
-<li>任务接口quest</li>
+<li><a href="#%E9%9A%90%E5%BC%8F%E7%9A%84bean%E5%8F%91%E7%8E%B0%E6%9C%BA%E5%88%B6%E5%92%8C%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D">隐式的bean发现机制和自动装配</a></li>
+<li><a href="#%E5%9C%A8java%E4%B8%AD%E8%BF%9B%E8%A1%8C%E6%98%BE%E5%BC%8F%E9%85%8D%E7%BD%AE">在Java中进行显式配置</a></li>
+<li><a href="#%E5%9C%A8XML%E4%B8%AD%E8%BF%9B%E8%A1%8C%E6%98%BE%E5%BC%8F%E9%85%8D%E7%BD%AE">在XML中进行显式配置</a></li>
 </ul>
+<h1 id="隐式的bean发现机制和自动装配">隐式的bean发现机制和自动装配</h1>
+<p>隐式的bean发现机制通过组件扫描（component scanning）实现，Spring 会自动发现应用上下文中所创建的 bean。自动装配（autowiring）则是Spring 自动满足 bean 之间的依赖。</p>
+<p>沿用&quot;初识依赖注入&quot;中的例子,我们将拯救公主任务类修改如下</p>
 <blockquote>
-<pre><code>public interface quest { 
-    void embark(); 
-}
-</code></pre>
-</blockquote>
-<ul>
-<li>
-<p>quest接口的三个实现类</p>
-<ul>
-<li>拯救公主任务</li>
-</ul>
-<blockquote>
-<pre><code>public class RescueDamselQuest implements quest{
+<pre><code>@Component
+public class RescueDamselQuest implements quest{
     public void embark() {
         System.out.println(&quot;拯救公主小分队&quot;);
     }
 }
 </code></pre>
+<p>通过添加一个<code>@Component</code>注解将RescueDamselQuest类声明为组件类，Spring会通过组件扫描将其发现并为之创建Bean。</p>
 </blockquote>
+<p>将骑士类修改如下</p>
+<blockquote>
+<pre><code>public class BraveKnight implements knight{
+    @Autowired
+    private quest quest;
+    /*public BraveKnight(quest quest) {
+        this.quest = quest;
+    }*/
+    public void embarkOnQuest() {
+        quest.embark();
+    }
+}
+</code></pre>
+<p>通过<code>@Autowired</code>注解实现自动装配，Spring会将匹配依赖需求的bean装配进来，即将RescueDamselQuest类装配到quest中，从而无需通过构造器注入。</p>
+</blockquote>
+<p>如果我们也将屠龙任务和圆桌任务声明为组件类，具体如下</p>
 <ul>
 <li>屠龙任务</li>
 </ul>
 <blockquote>
-<pre><code>public class SlayDragonQuest implements quest{
+<pre><code>@Component
+public class SlayDragonQuest implements quest{
     public void embark() {
         System.out.println(&quot;屠龙勇士&quot;);
     }
@@ -147,83 +155,32 @@
 <li>圆桌任务</li>
 </ul>
 <blockquote>
-<pre><code>public class MakeRoundTableRounderQuest implements quest{
+<pre><code>@Component
+public class MakeRoundTableRounderQuest implements quest{
     public void embark() {
         System.out.println(&quot;我干了，你们随意&quot;);
     }
 }
 </code></pre>
 </blockquote>
-</li>
-<li>
-<p>骑士接口</p>
-</li>
-</ul>
-<blockquote>
-<pre><code>public interface knight {
-    void embarkOnQuest(); //执行任务
-}
-</code></pre>
-</blockquote>
-<p>现在骑士需要执行拯救公主的任务，如下实现了一个类</p>
-<blockquote>
-<pre><code>public class BraveKnight  implements knight{
-    private RescueDamselQuest quest;
-    public BraveKnight () {
-        this.quest = new RescueDamselQuest(); //接受任务
-    }
-    public void embarkOnQuest() {
-        quest.embark(); //执行任务
-    }
-}
-</code></pre>
-</blockquote>
-<p>BraveKnight在它的构造函数中自行创建了RescueDamselQuest（new RescueDamselQuest()），这使得BraveKnight紧密地和 RescueDamselQuest耦合到了一起，因为如果让骑士执行其他任务如屠龙任务，那么BraveKnight将无法执行，除非将BraveKnight修改如下</p>
-<blockquote>
-<pre><code>public class BraveKnight  implements knight{
-    //private RescueDamselQuest quest;
-    private SlayDragonQuest quest;
-    public BraveKnight () {
-        //this.quest = new RescueDamselQuest(); 接受任务
-        this.quest = new SlayDragonQuest(); 
-    }
-    public void embarkOnQuest() {
-        quest.embark(); //执行任务
-    }
-}
-</code></pre>
-</blockquote>
-<p>但是BraveKnight又会与SlayDragonQuest耦合在一起，骑士永远只能执行一种任务。</p>
-<p><strong>耦合是因为BraveKnight这个类去负责管理RescueDamselQuest或SlayDragonQuest等任务类（它所相互协作、依赖的类）的引用（自行创建依赖类）</strong><br>
-<strong>而通过依赖注入DI能够实现解耦，对象的依赖关系将由系统中负责协调各对象的第三方组件在创建对象的时候进行设定，对象无需自行创建或管理它们的依赖关系。</strong></p>
-<h2 id="依赖注入方式之-构造器参数传入">依赖注入方式之--构造器参数传入</h2>
+<p>那么Spring在给BraveKnight类自动注入quest时将会产生歧义，因为有三个bean符合要求。<br>
+我们可以通过限定符<code>@Qualifier</code>来具体指定注入哪个bean，假设我们要注入屠龙任务，则</p>
 <blockquote>
 <pre><code>public class BraveKnight implements knight{
+    @Autowired
+    @Qualifier(&quot;SlayDragonQuest&quot;)
     private quest quest;
-    public BraveKnight(quest quest) {
+    /*public BraveKnight(quest quest) {
         this.quest = quest;
-    }
+    }*/
     public void embarkOnQuest() {
         quest.embark();
     }
 }
 </code></pre>
 </blockquote>
-<p>如上可以看到，BraveKnight 没有自行创建探险任务（new一个任务对象），没有与任何特定的 Quest 实现发生耦合，实现松耦合，所以BraveKnight 能够响应 RescueDamselQuest、SlayDragonQuest、MakeRoundTableRounderQuest 等任意的 Quest 实现，从而执行各种任务。</p>
-<blockquote>
-<pre><code>public static void main(String[] args) {
-   BraveKnight braveKnight = new BraveKnight(new RescueDamselQuest());
-   braveKnight.embarkOnQuest(); //执行拯救公主任务
-   braveKnight = new BraveKnight(new SlayDragonQuest());
-   braveKnight.embarkOnQuest(); //执行屠龙任务
-   braveKnight = new BraveKnight(new MakeRoundTableRounderQuest());
-   braveKnight.embarkOnQuest(); //执行圆桌任务
-}
-</code></pre>
-</blockquote>
-<p>对象的依赖关系由系统中负责协调各对象的第三方组件在创建对象<br>
-<code>BraveKnight braveKnight = new BraveKnight(new RescueDamselQuest());</code><br>
-时进行设定，对象无需自行创建或管理它们的依赖关系。</p>
+<h1 id="在java中进行显式配置">在Java中进行显式配置</h1>
+<p>To Be Contiune...</p>
 
             </div>
             
@@ -239,6 +196,15 @@
                 
               </div>
             
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://inthowe.github.io/post/spring-DI/">
+                  <h3 class="post-title">
+                    初识依赖注入
+                  </h3>
+                </a>
+              </div>
             
 
             

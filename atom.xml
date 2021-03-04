@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://inthowe.github.io</id>
     <title>你看见我小熊么</title>
-    <updated>2021-03-04T06:20:01.349Z</updated>
+    <updated>2021-03-04T13:45:26.733Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://inthowe.github.io"/>
     <link rel="self" href="https://inthowe.github.io/atom.xml"/>
@@ -10,6 +10,95 @@
     <logo>https://inthowe.github.io/images/avatar.png</logo>
     <icon>https://inthowe.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 你看见我小熊么</rights>
+    <entry>
+        <title type="html"><![CDATA[入门依赖注入]]></title>
+        <id>https://inthowe.github.io/post/ru-men-yi-lai-zhu-ru/</id>
+        <link href="https://inthowe.github.io/post/ru-men-yi-lai-zhu-ru/">
+        </link>
+        <updated>2021-03-04T06:34:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>在 Spring 中，对象无需自己查找或创建与其所关联的其他对象，容器会负责把需要相互协作的对象引用赋予各个对象。创建应用对象之间协作关系的行为称为装配wiring，这也是依赖注入DI的本质。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>在 Spring 中，对象无需自己查找或创建与其所关联的其他对象，容器会负责把需要相互协作的对象引用赋予各个对象。创建应用对象之间协作关系的行为称为装配wiring，这也是依赖注入DI的本质。</p>
+<!-- more -->
+<p>Spring 容器负责创建应用程序中的 bean（简单看为一个具体对象） 并通过 DI 来协调这些对象之间的关系。我们只需告诉 Spring 要创建哪些 bean 并且如何将其装配在一起，有如下三种方式：</p>
+<ul>
+<li><a href="#%E9%9A%90%E5%BC%8F%E7%9A%84bean%E5%8F%91%E7%8E%B0%E6%9C%BA%E5%88%B6%E5%92%8C%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D">隐式的bean发现机制和自动装配</a></li>
+<li><a href="#%E5%9C%A8java%E4%B8%AD%E8%BF%9B%E8%A1%8C%E6%98%BE%E5%BC%8F%E9%85%8D%E7%BD%AE">在Java中进行显式配置</a></li>
+<li><a href="#%E5%9C%A8XML%E4%B8%AD%E8%BF%9B%E8%A1%8C%E6%98%BE%E5%BC%8F%E9%85%8D%E7%BD%AE">在XML中进行显式配置</a></li>
+</ul>
+<h1 id="隐式的bean发现机制和自动装配">隐式的bean发现机制和自动装配</h1>
+<p>隐式的bean发现机制通过组件扫描（component scanning）实现，Spring 会自动发现应用上下文中所创建的 bean。自动装配（autowiring）则是Spring 自动满足 bean 之间的依赖。</p>
+<p>沿用&quot;初识依赖注入&quot;中的例子,我们将拯救公主任务类修改如下</p>
+<blockquote>
+<pre><code>@Component
+public class RescueDamselQuest implements quest{
+    public void embark() {
+        System.out.println(&quot;拯救公主小分队&quot;);
+    }
+}
+</code></pre>
+<p>通过添加一个<code>@Component</code>注解将RescueDamselQuest类声明为组件类，Spring会通过组件扫描将其发现并为之创建Bean。</p>
+</blockquote>
+<p>将骑士类修改如下</p>
+<blockquote>
+<pre><code>public class BraveKnight implements knight{
+    @Autowired
+    private quest quest;
+    /*public BraveKnight(quest quest) {
+        this.quest = quest;
+    }*/
+    public void embarkOnQuest() {
+        quest.embark();
+    }
+}
+</code></pre>
+<p>通过<code>@Autowired</code>注解实现自动装配，Spring会将匹配依赖需求的bean装配进来，即将RescueDamselQuest类装配到quest中，从而无需通过构造器注入。</p>
+</blockquote>
+<p>如果我们也将屠龙任务和圆桌任务声明为组件类，具体如下</p>
+<ul>
+<li>屠龙任务</li>
+</ul>
+<blockquote>
+<pre><code>@Component
+public class SlayDragonQuest implements quest{
+    public void embark() {
+        System.out.println(&quot;屠龙勇士&quot;);
+    }
+}
+</code></pre>
+</blockquote>
+<ul>
+<li>圆桌任务</li>
+</ul>
+<blockquote>
+<pre><code>@Component
+public class MakeRoundTableRounderQuest implements quest{
+    public void embark() {
+        System.out.println(&quot;我干了，你们随意&quot;);
+    }
+}
+</code></pre>
+</blockquote>
+<p>那么Spring在给BraveKnight类自动注入quest时将会产生歧义，因为有三个bean符合要求。<br>
+我们可以通过限定符<code>@Qualifier</code>来具体指定注入哪个bean，假设我们要注入屠龙任务，则</p>
+<blockquote>
+<pre><code>public class BraveKnight implements knight{
+    @Autowired
+    @Qualifier(&quot;SlayDragonQuest&quot;)
+    private quest quest;
+    /*public BraveKnight(quest quest) {
+        this.quest = quest;
+    }*/
+    public void embarkOnQuest() {
+        quest.embark();
+    }
+}
+</code></pre>
+</blockquote>
+<h1 id="在java中进行显式配置">在Java中进行显式配置</h1>
+<p>To Be Contiune...</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[初识依赖注入]]></title>
         <id>https://inthowe.github.io/post/spring-DI/</id>
@@ -27,7 +116,7 @@
 </ul>
 <blockquote>
 <pre><code>public interface quest { 
-    public abstract void embark(); 
+    void embark(); 
 }
 </code></pre>
 </blockquote>
@@ -74,7 +163,7 @@
 </ul>
 <blockquote>
 <pre><code>public interface knight {
-    public abstract void embarkOnQuest(); //执行任务
+    void embarkOnQuest(); //执行任务
 }
 </code></pre>
 </blockquote>
