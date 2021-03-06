@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1615016541293">
+<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1615024841567">
 <link rel="stylesheet" href="https://inthowe.github.io/styles/main.css">
 
 
@@ -36,7 +36,7 @@ Spring 容器负责创建应用程序中的 be..." />
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://inthowe.github.io">
-        <img src="https://inthowe.github.io/images/avatar.png?v=1615016541293" class="site-logo">
+        <img src="https://inthowe.github.io/images/avatar.png?v=1615024841567" class="site-logo">
         <h1 class="site-title">你看见我小熊么</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -166,6 +166,19 @@ public class KnightConfig {
 <p>这样我们通过自动注入的方式就可以给我们的骑士指派打败恶龙的任务，指派其它任务则只须需改配置，将<code>return new SlayDragonQuest();</code>修改为<code>return new RescueDamselQuest();</code>,这样就改为给骑士指派拯救公主的任务。</p>
 <h1 id="在xml中进行显式配置">在XML中进行显式配置</h1>
 <p>我不喜欢XML，略。基本采用第一种方式，代码相对较简约，其次bean的配置在实际应用过程中其实很少会发生变动，也很少出现注入的bean会发生冲突。</p>
+<p>通过两种上面两种方式配置完骑士类，就可以通过自动装配创建骑士类对象</p>
+<blockquote>
+<pre><code>public class test {
+    @Autowired
+    private static BraveKnight braveKnight；
+    public static void main(String[] args) {
+        braveKnight.embarkOnQuest();
+    }
+}
+</code></pre>
+</blockquote>
+<h1 id="依赖注入实现控制反转">依赖注入实现控制反转</h1>
+<p>将类与类之间的依赖和控制剥离出来，交给第三方Spring去做，将控制权反转给Spring。由Spring来控制依赖，通过构造函数或属性等注入进去（将任务类注入骑士类）。如果没有将控制反转给Spring，假设我们要创建一个拯救公主的骑士，那么我们得创建拯救公主的任务类（new RescueDamselQuest()），然后创建骑士类（new BraveKnight()）,把我们的拯救公主任务注入我们的骑士类中去，对于这样相对简单的依赖，似乎这样做也没有什么问题，但如果依赖关系变得复杂，A依赖B，B依赖C，C依赖D，D依赖E，那我们就得先创建E，在创建D，把E注入D，然后创建C，把D注入C中，再创建B，把C注入B中，最后再创建A，把B注入A中，这一个过程中我们为了使用一个A，创建了5个对象，要是多个地方使用到了A，那我们就得创建出5倍的对象出来，同时这些类一旦出现修改，我们就得修改多个地方。而将控制反转给Spring，我们只需要在配置中指明这些类的依赖关系，最后创建A对象时，只需要添加一个自动注入的注解，Spring就会为我们自动装配好，同时A对象所依赖的对象，Spring只需要从容器中取出对应的bean注入进去，无论A对象创建了几个，取出的都是相同的bean，而不是去不断地创建多个相同的对象。</p>
 
             </div>
             
