@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1614865978892">
+<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1615016541293">
 <link rel="stylesheet" href="https://inthowe.github.io/styles/main.css">
 
 
@@ -39,7 +39,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://inthowe.github.io">
-        <img src="https://inthowe.github.io/images/avatar.png?v=1614865978892" class="site-logo">
+        <img src="https://inthowe.github.io/images/avatar.png?v=1615016541293" class="site-logo">
         <h1 class="site-title">你看见我小熊么</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -110,22 +110,22 @@
 <h2 id="举个列子">举个列子</h2>
 <p>骑士执行拯救公主，打败恶龙，圆桌滚动等任务，下面创建对应的类</p>
 <ul>
-<li>任务接口quest</li>
+<li>任务接口Quest</li>
 </ul>
 <blockquote>
-<pre><code>public interface quest { 
+<pre><code>public interface Quest { 
     void embark(); 
 }
 </code></pre>
 </blockquote>
 <ul>
 <li>
-<p>quest接口的三个实现类</p>
+<p>Quest接口的三个实现类</p>
 <ul>
 <li>拯救公主任务</li>
 </ul>
 <blockquote>
-<pre><code>public class RescueDamselQuest implements quest{
+<pre><code>public class RescueDamselQuest implements Quest{
     public void embark() {
         System.out.println(&quot;拯救公主小分队&quot;);
     }
@@ -136,7 +136,7 @@
 <li>屠龙任务</li>
 </ul>
 <blockquote>
-<pre><code>public class SlayDragonQuest implements quest{
+<pre><code>public class SlayDragonQuest implements Quest{
     public void embark() {
         System.out.println(&quot;屠龙勇士&quot;);
     }
@@ -147,7 +147,7 @@
 <li>圆桌任务</li>
 </ul>
 <blockquote>
-<pre><code>public class MakeRoundTableRounderQuest implements quest{
+<pre><code>public class MakeRoundTableRounderQuest implements Quest{
     public void embark() {
         System.out.println(&quot;我干了，你们随意&quot;);
     }
@@ -178,29 +178,16 @@
 }
 </code></pre>
 </blockquote>
-<p>BraveKnight在它的构造函数中自行创建了RescueDamselQuest（new RescueDamselQuest()），这使得BraveKnight紧密地和 RescueDamselQuest耦合到了一起，因为如果让骑士执行其他任务如屠龙任务，那么BraveKnight将无法执行，除非将BraveKnight修改如下</p>
+<p>BraveKnight在它的构造函数中自行创建了RescueDamselQuest（new RescueDamselQuest()），这使得BraveKnight紧密地和 RescueDamselQuest耦合到了一起，因此如果让骑士执行其他任务如屠龙任务，那么BraveKnight将无法执行。</p>
 <blockquote>
-<pre><code>public class BraveKnight  implements knight{
-    //private RescueDamselQuest quest;
-    private SlayDragonQuest quest;
-    public BraveKnight () {
-        //this.quest = new RescueDamselQuest(); 接受任务
-        this.quest = new SlayDragonQuest(); 
-    }
-    public void embarkOnQuest() {
-        quest.embark(); //执行任务
-    }
-}
-</code></pre>
-</blockquote>
-<p>但是BraveKnight又会与SlayDragonQuest耦合在一起，骑士永远只能执行一种任务。</p>
 <p><strong>耦合是因为BraveKnight这个类去负责管理RescueDamselQuest或SlayDragonQuest等任务类（它所相互协作、依赖的类）的引用（自行创建依赖类）</strong><br>
-<strong>而通过依赖注入DI能够实现解耦，对象的依赖关系将由系统中负责协调各对象的第三方组件在创建对象的时候进行设定，对象无需自行创建或管理它们的依赖关系。</strong></p>
+骑士类仅仅只是需要接受一个任务，但具体是拯救公主任务，打败恶龙，圆桌滚动还是其它实现任务接口的其它类，并不重要。具体的骑士对象接受的是哪个具体任务，应该交由配置来实现，即注入的那个具体任务。</p>
+</blockquote>
 <h2 id="依赖注入方式之-构造器参数传入">依赖注入方式之--构造器参数传入</h2>
 <blockquote>
 <pre><code>public class BraveKnight implements knight{
-    private quest quest;
-    public BraveKnight(quest quest) {
+    private Quest quest;
+    public BraveKnight(Quest quest) {
         this.quest = quest;
     }
     public void embarkOnQuest() {
@@ -209,21 +196,19 @@
 }
 </code></pre>
 </blockquote>
-<p>如上可以看到，BraveKnight 没有自行创建探险任务（new一个任务对象），没有与任何特定的 Quest 实现发生耦合，实现松耦合，所以BraveKnight 能够响应 RescueDamselQuest、SlayDragonQuest、MakeRoundTableRounderQuest 等任意的 Quest 实现，从而执行各种任务。</p>
+<p>如上可以看到，BraveKnight 没有自行创建探险任务（new一个任务对象），没有与任何特定的 Quest 实现发生耦合，实现松耦合，所以BraveKnight 类能够响应 RescueDamselQuest、SlayDragonQuest、MakeRoundTableRounderQuest 等任意的Quest 接口的实现类，从而执行各种任务。</p>
 <blockquote>
-<pre><code>public static void main(String[] args) {
-   BraveKnight braveKnight = new BraveKnight(new RescueDamselQuest());
-   braveKnight.embarkOnQuest(); //执行拯救公主任务
-   braveKnight = new BraveKnight(new SlayDragonQuest());
-   braveKnight.embarkOnQuest(); //执行屠龙任务
-   braveKnight = new BraveKnight(new MakeRoundTableRounderQuest());
-   braveKnight.embarkOnQuest(); //执行圆桌任务
+<pre><code>public class test {
+    private static BraveKnight braveKnight = new BraveKnight(new RescueDamselQuest());
+    public static void main(String[] args) {
+        braveKnight.embarkOnQuest();
+    }
 }
 </code></pre>
 </blockquote>
-<p>对象的依赖关系由系统中负责协调各对象的第三方组件在创建对象<br>
-<code>BraveKnight braveKnight = new BraveKnight(new RescueDamselQuest());</code><br>
-时进行设定，对象无需自行创建或管理它们的依赖关系。</p>
+<blockquote>
+<p><strong>通过依赖注入DI能够实现解耦，对象的依赖关系将由系统中负责协调各对象的第三方组件在创建对象的时候进行设定，对象无需自行创建或管理它们的依赖关系。</strong></p>
+</blockquote>
 
             </div>
             

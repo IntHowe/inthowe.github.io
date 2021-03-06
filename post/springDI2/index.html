@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1614865978892">
+<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1615016541293">
 <link rel="stylesheet" href="https://inthowe.github.io/styles/main.css">
 
 
@@ -36,7 +36,7 @@ Spring 容器负责创建应用程序中的 be..." />
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://inthowe.github.io">
-        <img src="https://inthowe.github.io/images/avatar.png?v=1614865978892" class="site-logo">
+        <img src="https://inthowe.github.io/images/avatar.png?v=1615016541293" class="site-logo">
         <h1 class="site-title">你看见我小熊么</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -108,7 +108,7 @@ Spring 容器负责创建应用程序中的 be..." />
 <ul>
 <li><a href="#%E9%9A%90%E5%BC%8F%E7%9A%84bean%E5%8F%91%E7%8E%B0%E6%9C%BA%E5%88%B6%E5%92%8C%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D">隐式的bean发现机制和自动装配</a></li>
 <li><a href="#%E5%9C%A8java%E4%B8%AD%E8%BF%9B%E8%A1%8C%E6%98%BE%E5%BC%8F%E9%85%8D%E7%BD%AE">在Java中进行显式配置</a></li>
-<li><a href="#%E5%9C%A8XML%E4%B8%AD%E8%BF%9B%E8%A1%8C%E6%98%BE%E5%BC%8F%E9%85%8D%E7%BD%AE">在XML中进行显式配置</a></li>
+<li><a href="#%E5%9C%A8xml%E4%B8%AD%E8%BF%9B%E8%A1%8C%E6%98%BE%E5%BC%8F%E9%85%8D%E7%BD%AE">在XML中进行显式配置</a></li>
 </ul>
 <h1 id="隐式的bean发现机制和自动装配">隐式的bean发现机制和自动装配</h1>
 <p>隐式的bean发现机制通过组件扫描（component scanning）实现，Spring 会自动发现应用上下文中所创建的 bean。自动装配（autowiring）则是Spring 自动满足 bean 之间的依赖。</p>
@@ -128,9 +128,6 @@ public class RescueDamselQuest implements quest{
 <pre><code>public class BraveKnight implements knight{
     @Autowired
     private quest quest;
-    /*public BraveKnight(quest quest) {
-        this.quest = quest;
-    }*/
     public void embarkOnQuest() {
         quest.embark();
     }
@@ -138,41 +135,12 @@ public class RescueDamselQuest implements quest{
 </code></pre>
 <p>通过<code>@Autowired</code>注解实现自动装配，Spring会将匹配依赖需求的bean装配进来，即将RescueDamselQuest类装配到quest中，从而无需通过构造器注入。</p>
 </blockquote>
-<p>如果我们也将屠龙任务和圆桌任务声明为组件类，具体如下</p>
-<ul>
-<li>屠龙任务</li>
-</ul>
-<blockquote>
-<pre><code>@Component
-public class SlayDragonQuest implements quest{
-    public void embark() {
-        System.out.println(&quot;屠龙勇士&quot;);
-    }
-}
-</code></pre>
-</blockquote>
-<ul>
-<li>圆桌任务</li>
-</ul>
-<blockquote>
-<pre><code>@Component
-public class MakeRoundTableRounderQuest implements quest{
-    public void embark() {
-        System.out.println(&quot;我干了，你们随意&quot;);
-    }
-}
-</code></pre>
-</blockquote>
-<p>那么Spring在给BraveKnight类自动注入quest时将会产生歧义，因为有三个bean符合要求。<br>
-我们可以通过限定符<code>@Qualifier</code>来具体指定注入哪个bean，假设我们要注入屠龙任务，则</p>
+<p>如果我们现在需要骑士去执行其它任务，如打败恶龙的任务，则只须将RescueDamselQuest类上的<code>@Component</code>注解去除，在SlayDragonQuest类上加上<code>@Component</code>注解即可，而不需要改动BraveKnight的代码，这样我们无须通过硬编码的方式，而是通过配置的方式给骑士指派具体的任务。或者在所有的任务类上都加上<code>@Component</code>注解，进而Spring在给BraveKnight类自动注入quest时将会产生歧义，因为有三个bean符合要求。我们可以通过限定符<code>@Qualifier</code>来具体指定注入哪个bean，指派具体的任务，假设我们要注入屠龙任务，则</p>
 <blockquote>
 <pre><code>public class BraveKnight implements knight{
     @Autowired
     @Qualifier(&quot;SlayDragonQuest&quot;)
     private quest quest;
-    /*public BraveKnight(quest quest) {
-        this.quest = quest;
-    }*/
     public void embarkOnQuest() {
         quest.embark();
     }
@@ -180,7 +148,24 @@ public class MakeRoundTableRounderQuest implements quest{
 </code></pre>
 </blockquote>
 <h1 id="在java中进行显式配置">在Java中进行显式配置</h1>
-<p>To Be Contiune...</p>
+<p>除了通过注解<code>@Component</code>隐式发现bean和<code>@Autowired</code>自动装配机制，我们还可以通过显式的Java配置给我们的骑士指派特定的任务。回到&quot;初始依赖注入&quot;中的骑士和任务的代码（即去除所有<code>@Component</code>和<code>@Autowired</code>注解），我们只需要添加一个&quot;KnightConfig&quot;配置来给我们的骑士指派具体的任务，如下</p>
+<blockquote>
+<pre><code>@Configuration
+public class KnightConfig {
+    @Bean
+    public Quest quest() {
+        return new SlayDragonQuest();
+    }
+    @Bean
+    public Knight knight(Quest quest) {
+        return new BraveKnight(quest);
+    }
+}
+</code></pre>
+</blockquote>
+<p>这样我们通过自动注入的方式就可以给我们的骑士指派打败恶龙的任务，指派其它任务则只须需改配置，将<code>return new SlayDragonQuest();</code>修改为<code>return new RescueDamselQuest();</code>,这样就改为给骑士指派拯救公主的任务。</p>
+<h1 id="在xml中进行显式配置">在XML中进行显式配置</h1>
+<p>我不喜欢XML，略。基本采用第一种方式，代码相对较简约，其次bean的配置在实际应用过程中其实很少会发生变动，也很少出现注入的bean会发生冲突。</p>
 
             </div>
             
