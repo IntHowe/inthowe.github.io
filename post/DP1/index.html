@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1615290164033">
+<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1615290242146">
 <link rel="stylesheet" href="https://inthowe.github.io/styles/main.css">
 
 
@@ -38,7 +38,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://inthowe.github.io">
-        <img src="https://inthowe.github.io/images/avatar.png?v=1615290164033" class="site-logo">
+        <img src="https://inthowe.github.io/images/avatar.png?v=1615290242146" class="site-logo">
         <h1 class="site-title">你看见我小熊么</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -215,13 +215,17 @@
 <a href="https://leetcode-cn.com/problems/contiguous-sequence-lcci/">leetcode#面试题 16.17. 连续数列（题目相同）</a><br>
 <a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/">leetcode#121. 买卖股票的最佳时机</a></p>
 <blockquote>
-<p>（先做题再看提示）同样的我们只要把最后一天和前面几天区分开，要么是最后一天卖股票，要么是在前面几天卖股票，要么就是0（一直亏损），如果是最后一天卖，只要找出前几天的最小值，最后一天减最小值，就是最后一天卖的最大收益，要么是前几天卖，那就将规模缩小为（n - 1），套娃到最后，就剩第一天了，最小值min就只能为第一天，到第二天最大化收益max只能是第一天减第一天，最小值只能是第一天或者第二天，到第三天，就是第三天减最小值的收益和第二天最大化收益max进行比较，求出最大值，就是到第三天的最大化收益max（避免重复计算最大收益），第三天股票价格和min（前两天的最小值）相比较（避免重复计算最小值），就可以求出到第三天股票的最低价格......套娃到第n天即可。<br>
-<a href="https://leetcode-cn.com/problems/range-sum-query-immutable/">leetcode#303. 区域和检索 - 数组不可变</a><br>
+<p>（先做题再看提示）同样的我们只要把最后一天和前面几天区分开，要么是最后一天卖股票，要么是在前面几天卖股票，要么就是0（一直亏损），如果是最后一天卖，只要找出前几天的最小值，最后一天减最小值，就是最后一天卖的最大收益，要么是前几天卖，那就将规模缩小为（n - 1），套娃到最后，就剩第一天了，最小值min就只能为第一天，到第二天最大化收益max只能是第一天减第一天，最小值只能是第一天或者第二天，到第三天，就是第三天减最小值的收益和第二天最大化收益max进行比较，求出最大值，就是到第三天的最大化收益max（避免重复计算最大收益），第三天股票价格和min（前两天的最小值）相比较（避免重复计算最小值），就可以求出到第三天股票的最低价格......套娃到第n天即可。</p>
+</blockquote>
+<p><a href="https://leetcode-cn.com/problems/range-sum-query-immutable/">leetcode#303. 区域和检索 - 数组不可变</a><br>
 <a href="https://leetcode-cn.com/problems/divisor-game/">leetcode#1025. 除数博弈</a><br>
-<a href="https://leetcode-cn.com/problems/the-masseuse-lcci/">leetcode#面试题 17.16. 按摩师</a><br>
-（先做题再看提示）同样的我们只要把最后一个预约和前面几个预约区（归为子序列）分开（因为这样才能一阶一阶地降低问题规模），要注意的是按摩师不能连续工作，举个例子，只有一个工作预约的时候工作时长最长max只能等于nums[0]。两个工作预约时，max取其第一个预约和第二个预约的最大值。三个预约时，如果上一个预约（即第二个预约）工作了，那么第三个预约就不能工作了，所以只能是“不包含上一个预约的工作时间长（这里只剩第一个预约）加上第三个预约时长”与“包含上一个预约（这里只有第二个预约）的工作时长”进行,max取其最大值。四个预约时，同理，第三个预约不工作第四个预约工作或者第三个预约工作第四个预约不工作，但是这里要注意一点，在前面“不包含上一个预约的工作时间长（这里只剩第一个预约）加上第三个预约时长”中，如果我们单独去掉第三个预约（这里就只剩第一个预约），那么第四个预约也是可以工作的，即包含第四个预约有两种情况（1 + 4或者2 + 4）求其最大值,赋给n，不包含第四个预约就只有一种情况(1 + 3即仍为上面所说的“不包含上一个预约的工作时间长（这里只剩第一个预约）加上第三个预约时长”)，时长为f。第五个预约，不包含第四个预约，那就是f + nums[5]，包含第四个预约，只要去掉第四个预约即n - nums[4] + nums[5]。到5个预约为止，工作时长最大值max为&quot;f + nums[5]（即1 + 3 + 5）&quot;，&quot;n - nums[4] + nums[5]（即1 + 5或2 + 5）&quot;，或者&quot;n（第五个预约也是可以不工作的，即1 + 4或者2 + 4）&quot;，f = 最后一个预约不工作的最长时长，n = 最后一个预约工作的最长时长，开始套娃。<br>
-<a href="https://leetcode-cn.com/problems/is-subsequence/">leetcode#392. 判断子序列</a><br>
-这样用到二维数组来记录，不好说明，见视频</p>
+<a href="https://leetcode-cn.com/problems/the-masseuse-lcci/">leetcode#面试题 17.16. 按摩师</a></p>
+<blockquote>
+<p>（先做题再看提示）同样的我们只要把最后一个预约和前面几个预约区（归为子序列）分开（因为这样才能一阶一阶地降低问题规模），要注意的是按摩师不能连续工作，举个例子，只有一个工作预约的时候工作时长最长max只能等于nums[0]。两个工作预约时，max取其第一个预约和第二个预约的最大值。三个预约时，如果上一个预约（即第二个预约）工作了，那么第三个预约就不能工作了，所以只能是“不包含上一个预约的工作时间长（这里只剩第一个预约）加上第三个预约时长”与“包含上一个预约（这里只有第二个预约）的工作时长”进行,max取其最大值。四个预约时，同理，第三个预约不工作第四个预约工作或者第三个预约工作第四个预约不工作，但是这里要注意一点，在前面“不包含上一个预约的工作时间长（这里只剩第一个预约）加上第三个预约时长”中，如果我们单独去掉第三个预约（这里就只剩第一个预约），那么第四个预约也是可以工作的，即包含第四个预约有两种情况（1 + 4或者2 + 4）求其最大值,赋给n，不包含第四个预约就只有一种情况(1 + 3即仍为上面所说的“不包含上一个预约的工作时间长（这里只剩第一个预约）加上第三个预约时长”)，时长为f。第五个预约，不包含第四个预约，那就是f + nums[5]，包含第四个预约，只要去掉第四个预约即n - nums[4] + nums[5]。到5个预约为止，工作时长最大值max为&quot;f + nums[5]（即1 + 3 + 5）&quot;，&quot;n - nums[4] + nums[5]（即1 + 5或2 + 5）&quot;，或者&quot;n（第五个预约也是可以不工作的，即1 + 4或者2 + 4）&quot;，f = 最后一个预约不工作的最长时长，n = 最后一个预约工作的最长时长，开始套娃。</p>
+</blockquote>
+<p><a href="https://leetcode-cn.com/problems/is-subsequence/">leetcode#392. 判断子序列</a></p>
+<blockquote>
+<p>这样用到二维数组来记录，不好说明，见视频</p>
 </blockquote>
 
             </div>
