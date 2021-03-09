@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1615289788840">
+<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1615290164033">
 <link rel="stylesheet" href="https://inthowe.github.io/styles/main.css">
 
 
@@ -38,7 +38,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://inthowe.github.io">
-        <img src="https://inthowe.github.io/images/avatar.png?v=1615289788840" class="site-logo">
+        <img src="https://inthowe.github.io/images/avatar.png?v=1615290164033" class="site-logo">
         <h1 class="site-title">你看见我小熊么</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -189,7 +189,7 @@
 </ol>
 <blockquote>
 <p>拿数组规模为3（即[-2,1,-3]）来简单说明：我们从数组最后一个元素下手，把数组分为两部分[【-2,1】,-3],那么连续子数组的最大和只有三种情况（1）连续子数组是【-2,1】的子集，即[-2],[1],[-2,1]，（2）连续子数组是【-2,1】的子集并上<code>-3</code>，即[1,-3],[-2,1,-3]（3）连续子数组为[-3]。连续和最大子数组只有可能存在于这三种情况中。<br>
-第二种和第三种情况进行比较，其实是求问题规模为n，将包含末尾元素（<code>4</code>）的子集进行比较，要么是第二种情况（【-2,1,-3,4,-1,2,1,-5】的子集并上<code>4</code>大），要么是第三种情况（<code>4</code>）大，然后再和第一种相比较。</p>
+第二种和第三种情况进行比较，其实是求问题规模为n，将包含末尾元素<code>4</code>的子集进行比较，要么是第二种情况（【-2,1,-3,4,-1,2,1,-5】的子集并上<code>4</code>）大，要么是第三种情况（<code>只有4</code>）大，然后再和第一种相比较。</p>
 </blockquote>
 <ol start="3">
 <li>对应上述的三种情况，我们只需比较【-2,1,-3,4,-1,2,1,-5】连续和最大的子集、包含<code>-5</code>元素连续和最大的子集再简单加上<code>4</code>、<code>4</code>这三者就能求出连续和最大的子集。<br>
