@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>入门动态规划 | 你看见我小熊么</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://inthowe.github.io/favicon.ico?v=1615289788840">
+<link rel="stylesheet" href="https://inthowe.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="动态规划是一种特殊的分治思想，用一种可变的表格（多为一维数组或二维数组）来存储子问题的计算结果，避免后续重复计算已经计算过的子问题，进而实现时间复杂度的优化。
+
+动态规划步骤
+
+动态规划类似于数学归纳法，为了解决一个问题，把它分解成若干个与..." />
+    <meta name="keywords" content="动态规划,算法" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://inthowe.github.io">
+        <img src="https://inthowe.github.io/images/avatar.png?v=1615289788840" class="site-logo">
+        <h1 class="site-title">你看见我小熊么</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      别打了！别打了！在学了！
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://inthowe.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">入门动态规划</h2>
+            <div class="post-date">2021-03-09</div>
+            
+            <div class="post-content" v-pre>
+              <p>动态规划是一种特殊的分治思想，用一种可变的表格（多为一维数组或二维数组）来存储子问题的计算结果，避免后续重复计算已经计算过的子问题，进而实现时间复杂度的优化。</p>
+<!-- more -->
+<h1 id="动态规划步骤">动态规划步骤</h1>
+<ol>
+<li>动态规划类似于数学归纳法，为了解决一个问题，把它分解成若干个与此问题相似的子问题，当我们要计算dp[n]，可以通过dp[n - 1]，dp[n - 2]......dp[1]推出dp[n]，我们必须要找到子问题之间的关系，如dp[n] = dp[n - 1] + dp[n - 2]。</li>
+<li>通过表格储存各个子问题的计算结果。</li>
+<li>找出初始值，如dp[n] = dp[n - 1] + dp[n - 2]，dp[1]和dp[2]我们无法通过前面的关系式进行分解，所以我们需要找出dp[1]和dp[2]的初始值，这样就可以计算出dp[3]，dp[4]...dp[n]的值。</li>
+</ol>
+<h1 id="举个例子">举个例子</h1>
+<h2 id="leetcode70-爬楼梯"><a href="https://leetcode-cn.com/problems/climbing-stairs/">leetcode#70. 爬楼梯</a></h2>
+<blockquote>
+<p>假设你正在爬楼梯。需要 n 阶你才能到达楼顶。<br>
+每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？<br>
+注意：给定 n 是一个正整数。<br>
+示例：<br>
+输入： 3<br>
+输出： 3<br>
+解释： 有三种方法可以爬到楼顶。<br>
+1 阶 + 2 阶<br>
+1 阶 + 1 阶 + 1 阶<br>
+2 阶 + 1 阶</p>
+</blockquote>
+<ol>
+<li>首先将问题分解成多个子问题，最终的结果是我们需要跳上第n阶楼梯，那么我们一共哪几种方法跳上第n阶楼梯呢？我们每次只能爬1个或2个台阶，也就是说我们只能从第n - 1阶楼梯爬1个台阶或从第n - 2阶楼梯爬2个台阶爬上第n阶楼梯。</li>
+</ol>
+<blockquote>
+<p>假设是3阶楼梯，那我们就只能从第2阶楼梯爬1个台阶或第1阶梯爬2个台阶爬上第3阶楼梯，不存在其它的情况。<br>
+易得，爬1阶楼梯只有1种方法（爬1个台阶），爬2阶楼梯只有2种方法（1 阶 + 1 阶或者2 阶）<br>
+那爬3阶楼梯的方法数应当等于爬1阶楼梯和爬2阶楼梯的方法数总和，我们从示例中可以简单看出。</p>
+<blockquote>
+<p>（注：从1阶爬上3阶只能爬2个台阶，如果从1阶楼梯爬1阶后再爬1阶到3阶楼梯的话，这一方法会与从第2阶爬1个台阶上3阶中的1 阶 + 1 阶 + 1 阶重复，即从1阶楼梯爬1阶 + 1阶到3阶楼梯的时候会到达2阶楼梯，再爬1阶就已经属于2阶爬1阶到3阶楼梯中的方法了）</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>所以我们可以将规模为n的问题分解为n - 1和n - 2的问题，即dp[n] = dp[n - 1] + dp[n -2]</p>
+<blockquote>
+<p>（注：从n - 1阶楼多爬1个阶台阶上n阶相当于在爬上n - 1阶楼各个方法的后面+1阶上n阶，没有增加方法数，从n - 2阶楼多爬2个阶台阶上n阶相当于在爬上n - 2阶楼各个方法的后面+2阶上n阶，也没有增加方法数，如示例一般，所以关系式是dp[n] = dp[n - 1] + dp[n -2]，方法数相加）<br>
+那么我们就可以把规模为n的问题分解为规模为n - 1和n - 2的子问题</p>
+</blockquote>
+</blockquote>
+<ol start="2">
+<li>我们可以通过一维数组dp记录爬上各阶楼梯的方法数（子问题的计算结果），这样可以避免子问题的方法数重复计算。</li>
+</ol>
+<blockquote>
+<p>(注：比如dp[1] = 1(爬1阶楼梯有1种方法),dp[2] = 2(爬2阶楼梯有2种方法)，dp[3] = dp[1] + dp[2]，计算爬3阶楼梯的时候我们就不用再去计算爬1和2阶楼梯有多少种方法，dp[4] = dp[2] + dp[3],计算爬4阶楼梯的时候我们就不用再次去计算爬2和3阶楼梯有多少种方法，避免重复计算）</p>
+</blockquote>
+<ol start="3">
+<li>规模为n的问题最终为分解为dp[1]和dp[2]，无法在分解下去，前面我们就已经找到初始值了（dp[1] = 1，dp[2] = 2）<br>
+最终算法如下</li>
+</ol>
+<blockquote>
+<pre><code>public int climbStairs(int n) {
+    if(n &lt; 2){ //当楼梯只有1阶的时候（leetcode的题目第一步一般是处理特殊值）
+        return 1;
+    }
+    int[] ans = new int[n + 1];
+    ans[0] = 0;
+    ans[1] = 1; //爬1阶楼梯有1种方法
+    ans[2] = 2; //爬2阶楼梯有2种方法
+    for(int i = 3;i &lt; n + 1;i++){
+        ans[i] = ans[i - 1] + ans[i - 2]; //dp[n] = dp[n - 1] + dp[n -2]
+    }
+    return ans[n]; //爬n楼梯的方法数
+}
+</code></pre>
+</blockquote>
+<h2 id="练习">练习：</h2>
+<p><a href="https://leetcode-cn.com/problems/three-steps-problem-lcci/">leetcode#面试题 08.01. 三步问题</a><br>
+<a href="https://leetcode-cn.com/problems/min-cost-climbing-stairs/">leetcode#746. 使用最小花费爬楼梯</a></p>
+<h1 id="leetcode53-最大子序和"><a href="https://leetcode-cn.com/problems/maximum-subarray/">leetcode#53. 最大子序和</a></h1>
+<blockquote>
+<p>给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。<br>
+示例 1：<br>
+输入：nums = [-2,1,-3,4,-1,2,1,-5,4]<br>
+输出：6<br>
+解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。</p>
+</blockquote>
+<ol>
+<li>将规模为n的数组尝试分解为多个子问题进行解决，我们先从小规模寻找规律<br>
+1.当数组规模为1的时候，很明显连续子数组最大和为nums[0]。<br>
+2.但数组规模为2的时候，连续子数组只有三种情况:（1）nums[0]（2）nums[1]（3）nums[0] + nums[1]，那么连续子数组最大和只可能是这三种情况中的最大值。</li>
+<li>那我们可以从数组最后一个元素下手，我们把数组分为两部分[【-2,1,-3,4,-1,2,1,-5】,4],那么连续子数组的最大和只有三种情况（1）连续子数组是【-2,1,-3,4,-1,2,1,-5】的一部分或全部，即子集（2）连续子数组是【-2,1,-3,4,-1,2,1,-5】的子集并上<code>4</code>(该子集必定包含【-2,1,-3,4,-1,2,1,-5】数组的最后一个元素<code>-5</code>，不然并上<code>4</code>就不连续了)（3）连续子数组只有<code>4</code>。对这三种情况进行比较即可求出连续最大和子集。</li>
+</ol>
+<blockquote>
+<p>拿数组规模为3（即[-2,1,-3]）来简单说明：我们从数组最后一个元素下手，把数组分为两部分[【-2,1】,-3],那么连续子数组的最大和只有三种情况（1）连续子数组是【-2,1】的子集，即[-2],[1],[-2,1]，（2）连续子数组是【-2,1】的子集并上<code>-3</code>，即[1,-3],[-2,1,-3]（3）连续子数组为[-3]。连续和最大子数组只有可能存在于这三种情况中。<br>
+第二种和第三种情况进行比较，其实是求问题规模为n，将包含末尾元素（<code>4</code>）的子集进行比较，要么是第二种情况（【-2,1,-3,4,-1,2,1,-5】的子集并上<code>4</code>大），要么是第三种情况（<code>4</code>）大，然后再和第一种相比较。</p>
+</blockquote>
+<ol start="3">
+<li>对应上述的三种情况，我们只需比较【-2,1,-3,4,-1,2,1,-5】连续和最大的子集、包含<code>-5</code>元素连续和最大的子集再简单加上<code>4</code>、<code>4</code>这三者就能求出连续和最大的子集。<br>
+1.【-2,1,-3,4,-1,2,1,-5】连续和最大的子集不就相当于规模为n - 1的问题了么，仅仅只是去掉了<code>4</code>这一个元素。<br>
+2.包含<code>-5</code>元素连续和最大的子集再加上<code>4</code>相当于[【-2,1,-3,4,-1,2,1】,-5]连续和最大的子集并上<code>-5</code>（同样的，【-2,1,-3,4,-1,2,1】的连续和最大子集必定包含1，不然并上<code>-5</code>就不连续了。）或者只有<code>-5</code>。<br>
+3.这样我们就转而求【-2,1,-3,4,-1,2,1】，问题规模降为n - 2，这样套娃下去，直至问题规模为1，无法分解为止。</li>
+</ol>
+<p>综上所述，我们只须比较三个值，连续最大和子集max，包含末尾元素的连续最大和子集pre，末尾元素i，取其最大即可。<br>
+最终代码如下：</p>
+<blockquote>
+<pre><code>public int maxSubArray(int[] nums) {
+    int max = nums[0],pre = 0; //规模为1时，连续最大和子集max只能是nums[0]
+    for(int i : nums){ //这里从规模为1开始
+        pre = Math.max(pre + i,i); //包含末尾元素的连续最大和子集只有两种可能，要么第二种情况（前面子序列加上末尾元素），要么第三种情况（只有末尾元素）
+        max = Math.max(max,pre); //再与第一种情况相比较，求出nums[j]的连续最大和子集，进而求规模为j+1的问题
+    }
+    return max;
+}
+</code></pre>
+</blockquote>
+<h2 id="练习-2">练习：</h2>
+<p><a href="https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/">leetcode#剑指 Offer 42. 连续子数组的最大和（题目相同）</a><br>
+<a href="https://leetcode-cn.com/problems/contiguous-sequence-lcci/">leetcode#面试题 16.17. 连续数列（题目相同）</a><br>
+<a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/">leetcode#121. 买卖股票的最佳时机</a></p>
+<blockquote>
+<p>（先做题再看提示）同样的我们只要把最后一天和前面几天区分开，要么是最后一天卖股票，要么是在前面几天卖股票，要么就是0（一直亏损），如果是最后一天卖，只要找出前几天的最小值，最后一天减最小值，就是最后一天卖的最大收益，要么是前几天卖，那就将规模缩小为（n - 1），套娃到最后，就剩第一天了，最小值min就只能为第一天，到第二天最大化收益max只能是第一天减第一天，最小值只能是第一天或者第二天，到第三天，就是第三天减最小值的收益和第二天最大化收益max进行比较，求出最大值，就是到第三天的最大化收益max（避免重复计算最大收益），第三天股票价格和min（前两天的最小值）相比较（避免重复计算最小值），就可以求出到第三天股票的最低价格......套娃到第n天即可。<br>
+<a href="https://leetcode-cn.com/problems/range-sum-query-immutable/">leetcode#303. 区域和检索 - 数组不可变</a><br>
+<a href="https://leetcode-cn.com/problems/divisor-game/">leetcode#1025. 除数博弈</a><br>
+<a href="https://leetcode-cn.com/problems/the-masseuse-lcci/">leetcode#面试题 17.16. 按摩师</a><br>
+（先做题再看提示）同样的我们只要把最后一个预约和前面几个预约区（归为子序列）分开（因为这样才能一阶一阶地降低问题规模），要注意的是按摩师不能连续工作，举个例子，只有一个工作预约的时候工作时长最长max只能等于nums[0]。两个工作预约时，max取其第一个预约和第二个预约的最大值。三个预约时，如果上一个预约（即第二个预约）工作了，那么第三个预约就不能工作了，所以只能是“不包含上一个预约的工作时间长（这里只剩第一个预约）加上第三个预约时长”与“包含上一个预约（这里只有第二个预约）的工作时长”进行,max取其最大值。四个预约时，同理，第三个预约不工作第四个预约工作或者第三个预约工作第四个预约不工作，但是这里要注意一点，在前面“不包含上一个预约的工作时间长（这里只剩第一个预约）加上第三个预约时长”中，如果我们单独去掉第三个预约（这里就只剩第一个预约），那么第四个预约也是可以工作的，即包含第四个预约有两种情况（1 + 4或者2 + 4）求其最大值,赋给n，不包含第四个预约就只有一种情况(1 + 3即仍为上面所说的“不包含上一个预约的工作时间长（这里只剩第一个预约）加上第三个预约时长”)，时长为f。第五个预约，不包含第四个预约，那就是f + nums[5]，包含第四个预约，只要去掉第四个预约即n - nums[4] + nums[5]。到5个预约为止，工作时长最大值max为&quot;f + nums[5]（即1 + 3 + 5）&quot;，&quot;n - nums[4] + nums[5]（即1 + 5或2 + 5）&quot;，或者&quot;n（第五个预约也是可以不工作的，即1 + 4或者2 + 4）&quot;，f = 最后一个预约不工作的最长时长，n = 最后一个预约工作的最长时长，开始套娃。<br>
+<a href="https://leetcode-cn.com/problems/is-subsequence/">leetcode#392. 判断子序列</a><br>
+这样用到二维数组来记录，不好说明，见视频</p>
+</blockquote>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://inthowe.github.io/tag/DP/" class="tag">
+                    动态规划
+                  </a>
+                
+                  <a href="https://inthowe.github.io/tag/Algorithm/" class="tag">
+                    算法
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://inthowe.github.io/post/springDI2/">
+                  <h3 class="post-title">
+                    入门依赖注入
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '94ec1fd51176ba3adda3',
+        clientSecret: '961116715b7a89cb10a934782a30798bcef32d89',
+        repo: 'inthowe.github.io',
+        owner: 'IntHowe',
+        admin: ['IntHowe'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
