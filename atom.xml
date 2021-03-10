@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://inthowe.github.io</id>
     <title>你看见我小熊么</title>
-    <updated>2021-03-09T11:55:19.782Z</updated>
+    <updated>2021-03-10T05:32:42.821Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://inthowe.github.io"/>
     <link rel="self" href="https://inthowe.github.io/atom.xml"/>
@@ -139,7 +139,7 @@
 </blockquote>
 <p><a href="https://leetcode-cn.com/problems/is-subsequence/">leetcode#392. 判断子序列</a></p>
 <blockquote>
-<p>这样用到二维数组来记录，不好说明，见视频</p>
+<p>这样用到二维数组来记录，不好说明，见leetcode视频</p>
 </blockquote>
 ]]></content>
     </entry>
@@ -227,7 +227,7 @@ public class KnightConfig {
 </code></pre>
 </blockquote>
 <h1 id="依赖注入实现控制反转">依赖注入实现控制反转</h1>
-<p>将类与类之间的依赖和控制剥离出来，交给第三方Spring去做，将控制权反转给Spring。由Spring来控制依赖，通过构造函数或属性等注入进去（将任务类注入骑士类）。如果没有将控制反转给Spring，假设我们要创建一个拯救公主的骑士，那么我们得创建拯救公主的任务类（new RescueDamselQuest()），然后创建骑士类（new BraveKnight()）,把我们的拯救公主任务注入我们的骑士类中去，对于这样相对简单的依赖，似乎这样做也没有什么问题，但如果依赖关系变得复杂，A依赖B，B依赖C，C依赖D，D依赖E，那我们就得先创建E，在创建D，把E注入D，然后创建C，把D注入C中，再创建B，把C注入B中，最后再创建A，把B注入A中，这一个过程中我们为了使用一个A，创建了5个对象，要是多个地方使用到了A，那我们就得创建出5倍的对象出来，同时这些类一旦出现修改，我们就得修改多个地方。而将控制反转给Spring，我们只需要在配置中指明这些类的依赖关系，最后创建A对象时，只需要添加一个自动注入的注解，Spring就会为我们自动装配好，同时A对象所依赖的对象，Spring只需要从容器中取出对应的bean注入进去，无论A对象创建了几个，取出的都是相同的bean，而不是去不断地创建多个相同的对象。</p>
+<p>将类与类之间的依赖和控制剥离出来，交给第三方Spring去做，将控制权反转给Spring。由Spring来控制依赖，通过构造函数或属性等注入进去（将任务类注入骑士类）。如果没有将控制反转给Spring，假设我们要创建一个拯救公主的骑士，那么我们得创建拯救公主的任务类（new RescueDamselQuest()），然后创建骑士类（new BraveKnight()）,把我们的拯救公主任务注入我们的骑士类中去，对于这样相对简单的依赖，似乎这样做也没有什么问题，但如果依赖关系变得复杂，A依赖B，B依赖C，C依赖D，D依赖E，那我们就得先创建E，在创建D，把E注入D，然后创建C，把D注入C中，再创建B，把C注入B中，最后再创建A，把B注入A中，这一个过程中我们为了使用一个A，创建了5个对象，要是多个地方使用到了A，那我们就得创建出5倍的对象出来，同时这些类一旦出现修改，我们就得修改多个地方。而将控制反转给Spring，我们只需要在配置中指明这些类的依赖关系，最后创建A对象时，只需要添加一个自动注入的注解，Spring就会为我们自动装配好。</p>
 ]]></content>
     </entry>
     <entry>
